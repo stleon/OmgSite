@@ -4,4 +4,4 @@
 -----------------
 Добавлено:
 
-- класс `SiteAuditor` и класс `MetaHTMLParser`
+- класс ``SiteAuditor`` и класс ``MetaHTMLParser``

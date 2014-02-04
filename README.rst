@@ -8,7 +8,7 @@ Site Auditor
 - Количество ссылок в Яндекс Блоги (часто требует капчу), Google, Яндекс (сколько проиндексировано всего (часто требует капчу)/попаывшие в индекс)
 - Проверка установки Яндекс метрики, Google Analytics, Live Internet, Rambler TOP100, Mail Rating
 - Проверка существования страниц авторизации - Joomla, WordPress, UMI.CMS, Ucoz, Bitrix, /admin, /login
-- Вывод ```sitemap.xml``` и ```robots.txt```, если существуют.
+- Вывод ``sitemap.xml` и ``robots.txt``, если существуют.
 
 Copyright (C) 2014 ST LEON
 
