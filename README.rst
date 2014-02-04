@@ -1,6 +1,7 @@
-# Site Auditor
-
-## Особенности
+Site Auditor
+============
+Особенности
+-----------
 - ip, title, description, keywords, web-server, powered by, content language, content type
 - Яндекс ТИЦ, Google PR, Alexa rank (во всем мире/в отдельной стране)
 - Проверка на наличие в каталогах Яндекс, Mail, Yahoo, DMOZ
@@ -11,6 +12,6 @@
 
 Copyright (C) 2014 ST LEON
 
-email: <leonst998@gmail.com>
+email: leonst998@gmail.com
 
 web site: http://omgit.ru
