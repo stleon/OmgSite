@@ -58,11 +58,24 @@ Site Auditor
 Установка
 ---------
 
-Для работы **Site Auditor** необходим  `Requests <https://github.com/kennethreitz/requests>`_.
+Для работы **Site Auditor** необходим  `Requests <https://github.com/kennethreitz/requests>`_ и Python 2.7.
 
 Вы можете `скачать <https://github.com/stleon/OmgSite/archive/master.zip>`_ текущую версию (все самое новое). Или вы также способны на следующее:
 
 ``pip install site-auditor``
+
+Как пользоваться
+----------------
+
+На данный момент мы на стадии **Pre-Alpha**. Вы можете увидеть сообщения об ощибках и т.д. Но **Site Auditor** работает на
+большинстве протестированных мной сайтов.
+
+.. code-block::
+
+    cd site_auditor
+    python site_auditor.py
+
+В дальнейшем будет сделан графический пользовательский интерфейс для тех, кто боится работать в консоли.
 
 Copyright (C) 2014 ST LEON
 
