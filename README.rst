@@ -5,14 +5,14 @@ Site Auditor
 - ip, title, description, keywords, web-server, powered by, content language, content type
 - Яндекс ТИЦ, Google PR, Alexa rank (во всем мире/в отдельной стране)
 - Проверка на наличие в каталогах Яндекс, Mail, Yahoo, DMOZ
-- Количество ссылок в Яндекс Блоги (часто требует капчу), Google, Яндекс (сколько проиндексировано всего (часто требует капчу)/попаывшие в индекс)
+- Количество ссылок в Яндекс Блоги (часто требует капчу), Google, Яндекс (сколько проиндексировано всего (часто требует капчу)/попаввшие в индекс)
 - Проверка установки Яндекс метрики, Google Analytics, Live Internet, Rambler TOP100, Mail Rating
-- Проверка существования страниц авторизации - Joomla, WordPress, UMI.CMS, Ucoz, Bitrix, /admin, /login
+- Проверка существования страниц авторизации - Joomla, WordPress, UMI.CMS, Ucoz, Bitrix, /admin, /login, MODX, DLE, Drupal, ISP Manager
 - Вывод ``sitemap.xml`` и ``robots.txt``, если существуют.
 
 Установка
 ---------
-Вы можете склонировать текущую версию:
+Вы можете склонировать текущую версию (все самое новое):
 
 ``git clone https://github.com/stleon/OmgSite.git``
 

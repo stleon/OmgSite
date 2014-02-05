@@ -50,6 +50,9 @@ class SiteAuditor(object, MetaHTMLParser):
 			self.bitrix = self.engine('bitrix/admin')
 			self.simple_login = self.engine('login')
 			self.admin_login = self.engine('admin')
+			self.modx = self.engine('manager')
+			self.dle = self.engine('admin.php')
+			self.drupal = self.engine('user')
 
 	@staticmethod
 	def clear_site_name(site):
@@ -213,7 +216,8 @@ class SiteAuditor(object, MetaHTMLParser):
 
 	def engine(self, string):
 		r = requests.get('http://%s/%s' % (self.site, string), headers=self.headers, allow_redirects=True)
-		return 'YES' if r.status_code != 404 and r.text != self.html else 'NO'
+		return 'YES' if r.status_code not in [404, 403, 503, 301, 302] \
+				and r.text != self.html and '404' not in r.text else 'NO'
 
 
 if __name__ == '__main__':
@@ -257,6 +261,9 @@ if __name__ == '__main__':
 		print 'Bitrix Admin Directory - %s' % my_site.bitrix
 		print 'Simple Login Page - %s' % my_site.simple_login
 		print 'Simple Admin Login Page - %s' % my_site.admin_login
+		print 'MODX Admin Directory or ISP Manager - %s' % my_site.modx
+		print 'DLE Admin Directory - %s' % my_site.dle
+		print 'Drupal Login page - %s' % my_site.drupal
 		# Files
 		print 'Robots.txt: '
 		print my_site.robots_txt
