@@ -4,6 +4,7 @@ from xml.dom.minidom import parseString
 import random
 import requests
 from meta_parser import MetaHTMLParser
+import re
 
 # TODO strange work with http://www.rudn.ru/ & http://web-local.rudn.ru/
 
@@ -20,6 +21,7 @@ class SiteAuditor(object, MetaHTMLParser):
 			self.error = 'NO HOST AVAILABLE'
 		else:
 			self.error = None
+			self.whois = self.who()
 			self.web_server = self.inf_from_headers('server')
 			self.powered_by = self.inf_from_headers('x-powered-by')
 			self.content_lanuage = self.inf_from_headers('content-language')
@@ -219,10 +221,27 @@ class SiteAuditor(object, MetaHTMLParser):
 		return 'YES' if r.status_code not in [404, 403, 503, 301, 302] \
 				and r.text != self.html and '404' not in r.text else 'NO'
 
+	def who(self):
+		# Не юзается "встроенная" whois, тк на unix она встроенная, на винде, говорят, нет
+		r = requests.post("http://www.ripn.net/nic/whois/whois.cgi", {'Whois':self.site, 'Host':'whois.ripn.net'},
+			headers=self.headers, allow_redirects=True,).text.split('(in English).\n')[1].split('</PRE>')[0].strip()
+		# http://www.ripn.net/about/servpol.html
+		if 'You have exceeded allowed connection rate.' in r:
+			return u'Вы сделали больше 30 запросов в минуту (лимит). Попробуйте позже'
+		elif 'You are not allowed to connect' in r:
+			return u'Вы в течении 15 минут превышали лимит (30 запросов в минуту). Восстановление доступа будет ' \
+				u'не менее, чем через час'
+		else:
+			return re.compile(r'<.*?>').sub('', r)  # Регулярки плохо, если есть иные предложения - жду
+
 
 if __name__ == '__main__':
 	my_site = SiteAuditor(raw_input('Enter site, please: '))
 	if not my_site.error:
+		# WhoIS
+		print '='*50
+		print my_site.whois
+		print '='*50
 		# Base site information
 		print 'Site ip - %s' % my_site.ip
 		print 'Web Server - %s' % my_site.web_server

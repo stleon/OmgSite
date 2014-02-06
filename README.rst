@@ -2,6 +2,7 @@ Site Auditor
 ============
 Особенности
 -----------
+- WHOIS
 - ip, title, description, keywords, web-server, powered by, content language, content type
 - Яндекс ТИЦ, Google PR, Alexa rank (во всем мире/в отдельной стране)
 - Проверка на наличие в каталогах Яндекс, Mail, Yahoo, DMOZ
@@ -14,8 +15,34 @@ Site Auditor
 -------------
 .. code-block::
 
-    Enter site, please: google.com
-    Site ip - 87.245.196.147
+    Enter site, please: google.ru
+    ==================================================
+    domain:        GOOGLE.RU
+    nserver:       ns1.google.com.
+    nserver:       ns2.google.com.
+    nserver:       ns3.google.com.
+    nserver:       ns4.google.com.
+    state:         REGISTERED, DELEGATED, VERIFIED
+    org:           Google Inc.
+    registrar:     RU-CENTER-REG-RIPN
+    admin-contact: https://www.nic.ru/whois
+    created:       2004.03.04
+    paid-till:     2014.03.05
+    free-date:     2014.04.05
+    source:        TCI
+
+    nic-hdl:       RU-CENTER-REG-RIPN
+    org:           Regional Network Information Center
+    phone:         +7 495 737 0601
+    fax-no:        +7 495 737 0602
+    e-mail:        ru-bill@nic.ru
+    www:           https://www.nic.ru/whois
+    whois:         whois.nic.ru
+    source:        TCI
+
+    Last updated on 2014.02.06 09:26:36 MSK
+    ==================================================
+    Site ip - 87.245.196.177
     Web Server - gws
     Powered by - NO
     Content Language - NO
@@ -23,18 +50,18 @@ Site Auditor
     Site title - Google
     Description - NO
     Key words - NO
-    Yandex TYC - 150000
-    Google Page Rank - 9
-    Alexa Rank in all world - 1
-    Alexa Rank in United States - 1
-    Yandex Catalog - NO
+    Yandex TYC - 64000
+    Google Page Rank - 7
+    Alexa Rank in all world - 42
+    Alexa Rank in Russia - 3
+    Yandex Catalog - YES
     Mail Catalog - YES
-    Yahoo Catalog - YES
-    DMOZ Catalog - YES, 3720
+    Yahoo Catalog - NO
+    DMOZ Catalog - YES, 16
     Yandex Blog links - NEED CAPTCHA
-    Proindexirovano v Google - примерно 626000000
-    Proindexirovano v Yandex - 26 млн
-    Popavshie v index Yandex - 396028
+    Proindexirovano v Google - примерно 1400000
+    Proindexirovano v Yandex - 2 млн
+    Popavshie v index Yandex - 131962
     Yandex Metrika - NO
     Google Analytics - NO
     Live Internet - NO
@@ -55,6 +82,7 @@ Site Auditor
     SiteMap XML:
     EMPTY
 
+
 Установка
 ---------
 
@@ -67,7 +95,7 @@ Site Auditor
 Как пользоваться
 ----------------
 
-На данный момент мы на стадии **Pre-Alpha**. Вы можете увидеть сообщения об ощибках и т.д. Но **Site Auditor** работает на
+На данный момент мы на стадии **Pre-Alpha**. Вы можете увидеть сообщения об ошибках и т.д. Но **Site Auditor** работает на
 большинстве протестированных мной сайтов.
 
 .. code-block::
