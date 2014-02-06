@@ -10,6 +10,7 @@ Site Auditor
 - Проверка установки Яндекс метрики, Google Analytics, Live Internet, Rambler TOP100, Mail Rating
 - Проверка существования страниц авторизации - Joomla, WordPress, UMI.CMS, Ucoz, Bitrix, /admin, /login, MODX, DLE, Drupal, ISP Manager
 - Вывод ``sitemap.xml`` и ``robots.txt``, если существуют.
+- W3C HTML validator
 
 Пример работы
 -------------
@@ -50,6 +51,7 @@ Site Auditor
     Site title - Google
     Description - NO
     Key words - NO
+    W3C HTML validator - 26 Errors, 3 warning(s)
     Yandex TYC - 64000
     Google Page Rank - 7
     Alexa Rank in all world - 42

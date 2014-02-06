@@ -55,6 +55,7 @@ class SiteAuditor(object, MetaHTMLParser):
 			self.modx = self.engine('manager')
 			self.dle = self.engine('admin.php')
 			self.drupal = self.engine('user')
+			self.html_validator = self.html_valid()
 
 	@staticmethod
 	def clear_site_name(site):
@@ -223,7 +224,7 @@ class SiteAuditor(object, MetaHTMLParser):
 
 	def who(self):
 		# Не юзается "встроенная" whois, тк на unix она встроенная, на винде, говорят, нет
-		r = requests.post("http://www.ripn.net/nic/whois/whois.cgi", {'Whois':self.site, 'Host':'whois.ripn.net'},
+		r = requests.post("http://www.ripn.net/nic/whois/whois.cgi", {'Whois': self.site, 'Host': 'whois.ripn.net'},
 			headers=self.headers, allow_redirects=True,).text.split('(in English).\n')[1].split('</PRE>')[0].strip()
 		# http://www.ripn.net/about/servpol.html
 		if 'You have exceeded allowed connection rate.' in r:
@@ -233,6 +234,11 @@ class SiteAuditor(object, MetaHTMLParser):
 				u'не менее, чем через час'
 		else:
 			return re.compile(r'<.*?>').sub('', r)  # Регулярки плохо, если есть иные предложения - жду
+
+	def html_valid(self):
+		r = requests.get('http://validator.w3.org/check?uri=%s' % self.site, headers=self.headers,).text
+		r = r.split('valid">')[2].split('</td>')[0].strip()
+		return re.compile(r'<.*?>').sub('', r) if '<' in r else r  # Регулярки плохо, если есть иные предложения - жду
 
 
 if __name__ == '__main__':
@@ -251,6 +257,8 @@ if __name__ == '__main__':
 		print 'Site title - %s' % my_site.title
 		print 'Description - %s' % my_site.description
 		print 'Key words - %s' % my_site.key_words
+		print 'W3C HTML validator - %s' % my_site.html_validator
+		#print 'W3C CSS validator - %s' % my_site.css_validator
 		# Ranks
 		print 'Yandex TYC - %s' % my_site.yad['tyc']
 		print 'Google Page Rank - %s' % my_site.pr
