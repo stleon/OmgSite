@@ -1,9 +1,11 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import socket
 from xml.dom.minidom import parseString
 import random
 import requests
 from meta_parser import MetaHTMLParser
+from oexceptions import SiteException
 import re
 
 
@@ -15,8 +17,10 @@ class SiteAuditor(MetaHTMLParser):
 			self.headers = self.my_headers()
 			self.ip = socket.gethostbyname(self.site)
 			self.request = requests.get('http://%s' % self.site, headers=self.headers)
-		except (socket.gaierror, requests.exceptions.ConnectionError):  # as error
+		except (socket.gaierror, requests.exceptions.ConnectionError):
 			self.error = 'NO HOST AVAILABLE'
+		except SiteException as error:
+			self.error = error
 		else:
 			self.error = None
 			self.whois = self.who()
@@ -60,7 +64,10 @@ class SiteAuditor(MetaHTMLParser):
 		for i in ['http://', 'https://', '/', 'www.']:
 			if i in site:
 				site = site.replace(i, '')
-		return site.strip()
+		site = site.strip().encode('idna').decode('utf-8')
+		if len(site) > 255:
+			raise SiteException
+		return site
 
 	def my_headers(self):
 		useragents = [
