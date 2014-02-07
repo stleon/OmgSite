@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from distutils.core import setup
 import os
 import sys
@@ -39,7 +40,7 @@ setup(
 		'Natural Language :: Russian',
 		'Operating System :: OS Independent',
 		'Programming Language :: Python',
-		'Programming Language :: Python :: 2.7',
+		'Programming Language :: Python :: 3.3',
 		'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
 		'Topic :: Internet :: WWW/HTTP :: Site Management',
 		'Topic :: Internet :: WWW/HTTP :: Site Management :: Link Checking',

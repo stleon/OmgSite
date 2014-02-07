@@ -6,10 +6,8 @@ import requests
 from meta_parser import MetaHTMLParser
 import re
 
-# TODO strange work with http://www.rudn.ru/ & http://web-local.rudn.ru/
 
-
-class SiteAuditor(object, MetaHTMLParser):
+class SiteAuditor(MetaHTMLParser):
 	def __init__(self, site):
 		MetaHTMLParser.__init__(self)
 		try:
@@ -173,7 +171,7 @@ class SiteAuditor(object, MetaHTMLParser):
 		"""
 		gpr_hash_seed = "Mining PageRank is AGAINST GOOGLE'S TERMS OF SERVICE. Yes, I'm talking to you, scammer."
 		magic = 0x1020345
-		for i in xrange(len(self.site)):
+		for i in range(len(self.site)):
 			magic ^= ord(gpr_hash_seed[i % len(gpr_hash_seed)]) ^ ord(self.site[i])
 			magic = (magic >> 23 | magic << 9) & 0xFFFFFFFF
 		url = "http://toolbarqueries.google.com/tbr?client=navclient-auto&features=Rank&ch=%s&q=info:%s" % \
@@ -231,7 +229,7 @@ class SiteAuditor(object, MetaHTMLParser):
 			return u'Вы сделали больше 30 запросов в минуту (лимит). Попробуйте позже'
 		elif 'You are not allowed to connect' in r:
 			return u'Вы в течении 15 минут превышали лимит (30 запросов в минуту). Восстановление доступа будет ' \
-				u'не менее, чем через час'
+										u'не менее, чем через час'
 		else:
 			return re.compile(r'<.*?>').sub('', r)  # Регулярки плохо, если есть иные предложения - жду
 
@@ -242,59 +240,59 @@ class SiteAuditor(object, MetaHTMLParser):
 
 
 if __name__ == '__main__':
-	my_site = SiteAuditor(raw_input('Enter site, please: '))
+	my_site = SiteAuditor(input('Enter site, please: '))
 	if not my_site.error:
 		# WhoIS
-		print '='*50
-		print my_site.whois
-		print '='*50
+		print('='*50)
+		print(my_site.whois)
+		print('='*50)
 		# Base site information
-		print 'Site ip - %s' % my_site.ip
-		print 'Web Server - %s' % my_site.web_server
-		print 'Powered by - %s' % my_site.powered_by
-		print 'Content Language - %s' % my_site.content_lanuage
-		print 'Content Type - %s' % my_site.content_type
-		print 'Site title - %s' % my_site.title
-		print 'Description - %s' % my_site.description
-		print 'Key words - %s' % my_site.key_words
-		print 'W3C HTML validator - %s' % my_site.html_validator
+		print('Site ip - %s' % my_site.ip)
+		print('Web Server - %s' % my_site.web_server)
+		print('Powered by - %s' % my_site.powered_by)
+		print('Content Language - %s' % my_site.content_lanuage)
+		print('Content Type - %s' % my_site.content_type)
+		print('Site title - %s' % my_site.title)
+		print('Description - %s' % my_site.description)
+		print('Key words - %s' % my_site.key_words)
+		print('W3C HTML validator - %s' % my_site.html_validator)
 		#print 'W3C CSS validator - %s' % my_site.css_validator
 		# Ranks
-		print 'Yandex TYC - %s' % my_site.yad['tyc']
-		print 'Google Page Rank - %s' % my_site.pr
-		print 'Alexa Rank in all world - %s' % my_site.alexa['all_world']
-		print 'Alexa Rank in %s - %s' % (my_site.alexa['country'], my_site.alexa['rank_in_country'])
+		print('Yandex TYC - %s' % my_site.yad['tyc'])
+		print('Google Page Rank - %s' % my_site.pr)
+		print('Alexa Rank in all world - %s' % my_site.alexa['all_world'])
+		print('Alexa Rank in %s - %s' % (my_site.alexa['country'], my_site.alexa['rank_in_country']))
 		# Catalogs
-		print 'Yandex Catalog - %s' % my_site.yad['cat']
-		print 'Mail Catalog - %s' % my_site.mail_catalog
-		print 'Yahoo Catalog - %s' % my_site.yahoo_catalog
-		print 'DMOZ Catalog - %s' % my_site.dmoz
+		print('Yandex Catalog - %s' % my_site.yad['cat'])
+		print('Mail Catalog - %s' % my_site.mail_catalog)
+		print('Yahoo Catalog - %s' % my_site.yahoo_catalog)
+		print('DMOZ Catalog - %s' % my_site.dmoz)
 		# Links
-		print 'Yandex Blog links - %s' % my_site.yad['blogs']
-		print 'Proindexirovano v Google - %s' % my_site.pro_index['google']
-		print 'Proindexirovano v Yandex - %s' % my_site.pro_index['yandex_standart']
-		print 'Popavshie v index Yandex - %s' % my_site.pro_index['yandex_in_index']
+		print('Yandex Blog links - %s' % my_site.yad['blogs'])
+		print('Proindexirovano v Google - %s' % my_site.pro_index['google'])
+		print('Proindexirovano v Yandex - %s' % my_site.pro_index['yandex_standart'])
+		print('Popavshie v index Yandex - %s' % my_site.pro_index['yandex_in_index'])
 		# Stats
-		print 'Yandex Metrika - %s' % my_site.ya_metrica
-		print 'Google Analytics - %s' % my_site.google_an
-		print 'Live Internet - %s' % my_site.live_inet
-		print 'Rambler TOP100 - %s' % my_site.rambler_top
-		print 'Mail Rating - %s' % my_site.mail_rating
+		print('Yandex Metrika - %s' % my_site.ya_metrica)
+		print('Google Analytics - %s' % my_site.google_an)
+		print('Live Internet - %s' % my_site.live_inet)
+		print('Rambler TOP100 - %s' % my_site.rambler_top)
+		print('Mail Rating - %s' % my_site.mail_rating)
 		# Admins
-		print 'Joomla Admin Directory - %s' % my_site.joomla
-		print 'WordPress Admin Directory - %s' % my_site.word_press
-		print 'UMI.CMS Admin Directory - %s' % my_site.umi
-		print 'Ucoz Admin Directory - %s' % my_site.ucoz
-		print 'Bitrix Admin Directory - %s' % my_site.bitrix
-		print 'Simple Login Page - %s' % my_site.simple_login
-		print 'Simple Admin Login Page - %s' % my_site.admin_login
-		print 'MODX Admin Directory or ISP Manager - %s' % my_site.modx
-		print 'DLE Admin Directory - %s' % my_site.dle
-		print 'Drupal Login page - %s' % my_site.drupal
+		print('Joomla Admin Directory - %s' % my_site.joomla)
+		print('WordPress Admin Directory - %s' % my_site.word_press)
+		print('UMI.CMS Admin Directory - %s' % my_site.umi)
+		print('Ucoz Admin Directory - %s' % my_site.ucoz)
+		print('Bitrix Admin Directory - %s' % my_site.bitrix)
+		print('Simple Login Page - %s' % my_site.simple_login)
+		print('Simple Admin Login Page - %s' % my_site.admin_login)
+		print('MODX Admin Directory or ISP Manager - %s' % my_site.modx)
+		print('DLE Admin Directory - %s' % my_site.dle)
+		print('Drupal Login page - %s' % my_site.drupal)
 		# Files
-		print 'Robots.txt: '
-		print my_site.robots_txt
-		print 'SiteMap XML: '
-		print my_site.sitemap_xml
+		print('Robots.txt: ')
+		print(my_site.robots_txt)
+		print('SiteMap XML: ')
+		print(my_site.sitemap_xml)
 	else:
-		print my_site.error
+		print(my_site.error)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 
 
 class MetaHTMLParser(HTMLParser):
@@ -22,5 +22,5 @@ if __name__ == '__main__':
 	p = MetaHTMLParser()
 	p.feed('<html><head><title>Test</title><meta name="description" content="123123"><meta '
 								'name="keywords" content="11111"></head>''<body><h1>Parse me!</h1></body></html>')
-	print p.meta
+	print(p.meta)
 	p.close()
