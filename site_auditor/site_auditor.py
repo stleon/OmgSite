@@ -41,7 +41,7 @@ class SiteAuditor(MetaHTMLParser):
 			self.robots_txt = self.robots('robots.txt')
 			self.sitemap_xml = self.robots('sitemap.xml')
 			self.pro_index = self.index()
-			self.mail_catalog = self.catalogs(u'Не найдено', 'http://search.list.mail.ru/?q=')
+			self.mail_catalog = self.catalogs('Не найдено', 'http://search.list.mail.ru/?q=')
 			self.yahoo_catalog = self.catalogs('We did not find', 'http://dir.search.yahoo.com/search?ei=UTF-8&h=c&p=')
 			self.joomla = self.engine('administrator')
 			self.word_press = self.engine('wp-login.php')
@@ -129,11 +129,11 @@ class SiteAuditor(MetaHTMLParser):
 		# TODO Yandex needs capcha
 		r = requests.get('http://blogs.yandex.ru/search.xml?link=%s&noreask=1' % self.site, headers=self.headers).text
 		try:
-			blog_links = r.split(u' из <b>')[1].split(u'</b> найденных.')[0].strip()
+			blog_links = r.split(' из <b>')[1].split('</b> найденных.')[0].strip()
 		except IndexError:
 			blog_links = 'NEED CAPTCHA'
 		#r = requests.get('http://yandex.ru/yandsearch?text="*.%s"&noreask=1&lr=193' % (self.site),).text
-		#r = r.split(u'Нашлось<br>')[1].split(u'ответов</strong>')[0].strip()
+		#r = r.split('Нашлось<br>')[1].split('ответов</strong>')[0].strip()
 		#print r
 		return {
 				'tyc': tyc, 'blogs': blog_links,
@@ -186,28 +186,28 @@ class SiteAuditor(MetaHTMLParser):
 
 	def index(self):
 		google = requests.get("https://www.google.ru/search?q=site:%s" % self.site, headers=self.headers).text
-		if u'ничего не найдено' in google:
+		if 'ничего не найдено' in google:
 			google = 0
 		else:
-			#.replace(u'примерно', '')
+			#.replace('примерно', '')
 			try:
-				google = google.split(u'id="resultStats">Результатов: ')[1].split('<')[0].replace('&#160;', '')
+				google = google.split('id="resultStats">Результатов: ')[1].split('<')[0].replace('&#160;', '')
 			except IndexError:
 				google = 'CANT DETECT'
 		yad_session = requests.Session()
 		yandex = yad_session.get("http://yandex.ru/yandsearch?text=&site=%s&ras=1" % self.site, headers=self.headers)
 		try:
-			yandex = yandex.text.split(u'Нашлось<br>')[1].split(u'ответов</strong>')[0].replace('&nbsp;', ' ').strip()
+			yandex = yandex.text.split('Нашлось<br>')[1].split('ответов</strong>')[0].replace('&nbsp;', ' ').strip()
 		except IndexError:
 			# TODO Yandex needs capcha
 			yandex = 'NEED CAPTCHA'
 		yad_ind = requests.get("http://webmaster.yandex.ru/check.xml?hostname=%s" % self.site, headers=self.headers)
-		mirror_text = u'Сайт является зеркалом</span> '
+		mirror_text = 'Сайт является зеркалом</span> '
 		if mirror_text in yad_ind.text:
 			mirror = yad_ind.text.split(mirror_text)[1].split(', ')[0]
 			yad_ind = requests.get("http://webmaster.yandex.ru/check.xml?hostname=%s" % mirror, headers=self.headers)
 		try:
-			yad_ind = yad_ind.text.split(u'Страницы: ')[1].split('</div>')[0]
+			yad_ind = yad_ind.text.split('Страницы: ')[1].split('</div>')[0]
 		except IndexError:
 			yad_ind = 0
 		return {'google': google, 'yandex_standart': yandex, 'yandex_in_index': yad_ind}
@@ -226,10 +226,10 @@ class SiteAuditor(MetaHTMLParser):
 			headers=self.headers, allow_redirects=True,).text.split('(in English).\n')[1].split('</PRE>')[0].strip()
 		# http://www.ripn.net/about/servpol.html
 		if 'You have exceeded allowed connection rate.' in r:
-			return u'Вы сделали больше 30 запросов в минуту (лимит). Попробуйте позже'
+			return 'Вы сделали больше 30 запросов в минуту (лимит). Попробуйте позже'
 		elif 'You are not allowed to connect' in r:
-			return u'Вы в течении 15 минут превышали лимит (30 запросов в минуту). Восстановление доступа будет ' \
-										u'не менее, чем через час'
+			return 'Вы в течении 15 минут превышали лимит (30 запросов в минуту). Восстановление доступа будет ' \
+										'не менее, чем через час'
 		else:
 			return re.compile(r'<.*?>').sub('', r)  # Регулярки плохо, если есть иные предложения - жду
 
