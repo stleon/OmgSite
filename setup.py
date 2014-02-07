@@ -10,7 +10,7 @@ if sys.argv[-1] == 'publish':
 
 
 def open_docs(doc):
-	with open(doc) as f:
+	with open(doc, encoding="utf8") as f:
 		return f.read()
 
 setup(
