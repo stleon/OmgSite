@@ -61,7 +61,7 @@ class SiteAuditor(MetaHTMLParser):
 
 	@staticmethod
 	def clear_site_name(site):
-		for i in ['http://', 'https://', '/', 'www.']:
+		for i in ['http://', 'https://', '/',]:
 			if i in site:
 				site = site.replace(i, '')
 		if re.search(r'[а-яА-Я]', site):
