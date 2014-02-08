@@ -61,14 +61,21 @@ class SiteAuditor(MetaHTMLParser):
 
 	@staticmethod
 	def clear_site_name(site):
-		for i in ['http://', 'https://', '/',]:
+
+		def check_symbols(i):
+			if i not in '`~!№@"$;%^?&*()+{[]}|\\:<>,\' ':
+				return i
+			else:
+				raise SiteException('Недопустимые символы в домене!')
+
+		for i in ['http://', 'https://', '/', ]:
 			if i in site:
 				site = site.replace(i, '')
 		if re.search(r'[а-яА-Я]', site):
 			site = site.strip().encode('idna').decode('utf-8')
 		if len(site) > 255 or len(site) < 4:
-			raise SiteException
-		return site
+			raise SiteException('Длина домена не должна превышать 255 символов или быть меньше 4!')
+		return ''.join(list(map(check_symbols, site)))
 
 	def my_headers(self):
 		useragents = [

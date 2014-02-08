@@ -3,6 +3,7 @@
 
 
 class SiteException(Exception):
+	def __init__(self, message):
+		self.message = message
 	def __str__(self):
-		return 'Длина домена не должна превышать ' \
-				'255 символов или быть меньше 4!'
+		return self.message
