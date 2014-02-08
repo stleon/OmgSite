@@ -64,8 +64,9 @@ class SiteAuditor(MetaHTMLParser):
 		for i in ['http://', 'https://', '/', 'www.']:
 			if i in site:
 				site = site.replace(i, '')
-		site = site.strip().encode('idna').decode('utf-8')
-		if len(site) > 255:
+		if re.search(r'[а-яА-Я]', site):
+			site = site.strip().encode('idna').decode('utf-8')
+		if len(site) > 255 or len(site) < 4:
 			raise SiteException
 		return site
 
