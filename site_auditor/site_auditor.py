@@ -65,7 +65,7 @@ class SiteAuditor(MetaHTMLParser):
 			if i in site:
 				site = site.replace(i, '')
 		site = site.strip().encode('idna').decode('utf-8')
-		if len(site) > 255:
+		if len(site) > 255 or len(site) < 4:
 			raise SiteException
 		return site
 
