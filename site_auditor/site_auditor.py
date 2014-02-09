@@ -17,10 +17,14 @@ class SiteAuditor(MetaHTMLParser):
 			self.headers = self.my_headers()
 			self.ip = socket.gethostbyname(self.site)
 			self.request = requests.get('http://%s' % self.site, headers=self.headers)
+			with open(r'out.txt') as output:
+				self.output = output.read()
 		except (socket.gaierror, requests.exceptions.ConnectionError):
 			self.error = 'NO HOST AVAILABLE'
 		except SiteException as error:
 			self.error = error
+		except FileNotFoundError:
+			self.error = 'Не найден файл output.txt!'
 		else:
 			self.error = None
 			self.whois = self.who()
@@ -253,61 +257,26 @@ class SiteAuditor(MetaHTMLParser):
 		r = r.split('valid">')[2].split('</td>')[0].strip()
 		return re.compile(r'<.*?>').sub('', r) if '<' in r else r  # Регулярки плохо, если есть иные предложения - жду
 
+	def __str__(self):
+		return self.output.format(whois=self.whois, lines='='*50, ip=self.ip, web_server=self.web_server,
+									powered_by=self.powered_by, content_lanuage=self.content_lanuage,
+									content_type=self.content_type, title=self.title, description=self.description,
+									key_words=self.key_words, html_validator=self.html_validator, tyc=self.yad['tyc'],
+									pr=self.pr, all_world=self.alexa['all_world'], country=self.alexa['country'],
+									rank_in_country=self.alexa['rank_in_country'], cat=self.yad['cat'],
+									mail_catalog=self.mail_catalog, yahoo_catalog=self.yahoo_catalog, dmoz=self.dmoz,
+									blogs=self.yad['blogs'], google=self.pro_index['google'],
+									yandex_standart=self.pro_index['yandex_standart'],
+									yandex_in_index=self.pro_index['yandex_in_index'], ya_metrica=self.ya_metrica,
+									google_an=self.google_an, live_inet=self.live_inet, rambler_top=self.rambler_top,
+									mail_rating=self.mail_rating, joomla=self.joomla, word_press=self.word_press,
+									umi=self.umi, ucoz=self.ucoz, bitrix=self.bitrix, simple_login=self.simple_login,
+									admin_login=self.admin_login, modx=self.modx, dle=self.dle, drupal=self.drupal,
+									robots_txt=self.robots_txt, sitemap_xml=self.sitemap_xml)
 
 if __name__ == '__main__':
 	my_site = SiteAuditor(input('Enter site, please: '))
 	if not my_site.error:
-		# WhoIS
-		print('='*50)
-		print(my_site.whois)
-		print('='*50)
-		# Base site information
-		print('Site ip - %s' % my_site.ip)
-		print('Web Server - %s' % my_site.web_server)
-		print('Powered by - %s' % my_site.powered_by)
-		print('Content Language - %s' % my_site.content_lanuage)
-		print('Content Type - %s' % my_site.content_type)
-		print('Site title - %s' % my_site.title)
-		print('Description - %s' % my_site.description)
-		print('Key words - %s' % my_site.key_words)
-		print('W3C HTML validator - %s' % my_site.html_validator)
-		#print 'W3C CSS validator - %s' % my_site.css_validator
-		# Ranks
-		print('Yandex TYC - %s' % my_site.yad['tyc'])
-		print('Google Page Rank - %s' % my_site.pr)
-		print('Alexa Rank in all world - %s' % my_site.alexa['all_world'])
-		print('Alexa Rank in %s - %s' % (my_site.alexa['country'], my_site.alexa['rank_in_country']))
-		# Catalogs
-		print('Yandex Catalog - %s' % my_site.yad['cat'])
-		print('Mail Catalog - %s' % my_site.mail_catalog)
-		print('Yahoo Catalog - %s' % my_site.yahoo_catalog)
-		print('DMOZ Catalog - %s' % my_site.dmoz)
-		# Links
-		print('Yandex Blog links - %s' % my_site.yad['blogs'])
-		print('Proindexirovano v Google - %s' % my_site.pro_index['google'])
-		print('Proindexirovano v Yandex - %s' % my_site.pro_index['yandex_standart'])
-		print('Popavshie v index Yandex - %s' % my_site.pro_index['yandex_in_index'])
-		# Stats
-		print('Yandex Metrika - %s' % my_site.ya_metrica)
-		print('Google Analytics - %s' % my_site.google_an)
-		print('Live Internet - %s' % my_site.live_inet)
-		print('Rambler TOP100 - %s' % my_site.rambler_top)
-		print('Mail Rating - %s' % my_site.mail_rating)
-		# Admins
-		print('Joomla Admin Directory - %s' % my_site.joomla)
-		print('WordPress Admin Directory - %s' % my_site.word_press)
-		print('UMI.CMS Admin Directory - %s' % my_site.umi)
-		print('Ucoz Admin Directory - %s' % my_site.ucoz)
-		print('Bitrix Admin Directory - %s' % my_site.bitrix)
-		print('Simple Login Page - %s' % my_site.simple_login)
-		print('Simple Admin Login Page - %s' % my_site.admin_login)
-		print('MODX Admin Directory or ISP Manager - %s' % my_site.modx)
-		print('DLE Admin Directory - %s' % my_site.dle)
-		print('Drupal Login page - %s' % my_site.drupal)
-		# Files
-		print('Robots.txt: ')
-		print(my_site.robots_txt)
-		print('SiteMap XML: ')
-		print(my_site.sitemap_xml)
+		print(my_site)
 	else:
 		print(my_site.error)

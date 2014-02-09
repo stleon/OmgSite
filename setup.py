@@ -15,7 +15,7 @@ def open_docs(doc):
 		return f.read()
 
 setup(
-	name='site-auditor',
+	name=site_auditor.__title__,
 	version=site_auditor.__version__,
 	description='site auditor',
 	long_description=open_docs('README.rst') + '\n\n' + open_docs('HISTORY.rst'),
