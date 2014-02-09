@@ -259,7 +259,10 @@ class SiteAuditor(MetaHTMLParser):
 		return re.compile(r'<.*?>').sub('', r) if '<' in r else r  # Регулярки плохо, если есть иные предложения - жду
 
 	def __str__(self):
-		return self.output.format(whois=self.whois, lines='='*50, ip=self.ip, web_server=self.web_server,
+		if self.error:
+			return str(self.error)
+		else:
+			return self.output.format(whois=self.whois, lines='='*50, ip=self.ip, web_server=self.web_server,
 									powered_by=self.powered_by, content_lanuage=self.content_lanuage,
 									content_type=self.content_type, title=self.title, description=self.description,
 									key_words=self.key_words, html_validator=self.html_validator, tyc=self.yad['tyc'],
@@ -275,9 +278,6 @@ class SiteAuditor(MetaHTMLParser):
 									admin_login=self.admin_login, modx=self.modx, dle=self.dle, drupal=self.drupal,
 									robots_txt=self.robots_txt, sitemap_xml=self.sitemap_xml)
 
+
 if __name__ == '__main__':
-	my_site = SiteAuditor(input('Enter site, please: '))
-	if not my_site.error:
-		print(my_site)
-	else:
-		print(my_site.error)
+	print(SiteAuditor(input('Enter site, please: ')))

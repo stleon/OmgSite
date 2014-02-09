@@ -11,6 +11,7 @@ Site Auditor
 - Проверка существования страниц авторизации - Joomla, WordPress, UMI.CMS, Ucoz, Bitrix, /admin, /login, MODX, DLE, Drupal, ISP Manager
 - Вывод ``sitemap.xml`` и ``robots.txt``, если существуют.
 - W3C HTML validator
+- Валидатор микроразметки (тестовый режим)
 
 Пример работы
 -------------
@@ -108,11 +109,15 @@ Site Auditor
 Установка
 ---------
 
-Для работы **Site Auditor** необходим  `Requests <https://github.com/kennethreitz/requests>`_ и Python 3.
+Для работы **Site Auditor** необходим  `Requests <https://github.com/kennethreitz/requests>`_, `Microdata <https://github.com/edsu/microdata>`_ и Python 3.
 
 Вы можете `скачать <https://github.com/stleon/OmgSite/archive/master.zip>`_ текущую версию (все самое новое). Или вы также способны на следующее:
 
-``pip install site-auditor``
+.. code-block::
+
+    pip install requests
+    pip install microdata
+    pip install site-auditor
 
 Как пользоваться
 ----------------
