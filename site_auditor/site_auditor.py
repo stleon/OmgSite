@@ -34,8 +34,8 @@ class SiteAuditor(MetaHTMLParser):
 			self.content_type = self.inf_from_headers('content-type')
 			self.html = self.request.text
 			self.feed(self.html)
-			self.description = self.meta['description']
-			self.key_words = self.meta['keywords']
+			self.description = self.find_meta_tags_content('description')
+			self.key_words = self.find_meta_tags_content('keywords')
 			self.title = self.site_title()
 			self.ya_metrica = self.analytics('yaCounter')
 			self.google_an = self.analytics('google-analytics.com/ga.js')
@@ -257,6 +257,29 @@ class SiteAuditor(MetaHTMLParser):
 		r = requests.get('http://validator.w3.org/check?uri=%s' % self.site, headers=self.headers,).text
 		r = r.split('valid">')[2].split('</td>')[0].strip()
 		return re.compile(r'<.*?>').sub('', r) if '<' in r else r  # Регулярки плохо, если есть иные предложения - жду
+
+	def find_meta_tags_content(self, meta_tag):
+		'''
+		Функция ищет в html коде сайта мета тег переданный ей и возвращает
+		его значение. Функция учитывает возможность расположения параметра name
+		после параметра content и до.
+		
+		Принимает:
+			meta_tag - значение какого мета тега ищем - title, keywords, descriptions
+		
+		Возвращает:
+			meta_tag_content - строка с содержание мета-тега
+		'''
+		meta_tag_content = 'NO'
+		match_meta_tag_str = re.compile(r'<meta[.\s\S]+?>', re.I)
+		meta_tag_raws = re.findall(match_meta_tag_str, self.html)
+		for raw in meta_tag_raws:
+			if meta_tag in raw.lower():
+				content_match = re.compile(r'content=(?:\'|\")([\s\S.]+)(?:\'|\")', re.I)
+				if re.search(content_match, raw):
+					meta_tag_content = re.search(content_match, raw).group(1)
+		return meta_tag_content
+
 
 	def __str__(self):
 		if self.error:
