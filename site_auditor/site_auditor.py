@@ -4,14 +4,12 @@ import socket
 from xml.dom.minidom import parseString
 import random
 import requests
-from meta_parser import MetaHTMLParser
 from oexceptions import SiteException
 import re
 
 
-class SiteAuditor(MetaHTMLParser):
+class SiteAuditor():
 	def __init__(self, site):
-		MetaHTMLParser.__init__(self)
 		try:
 			self.site = self.clear_site_name(site)
 			self.headers = self.my_headers()
@@ -33,7 +31,6 @@ class SiteAuditor(MetaHTMLParser):
 			self.content_lanuage = self.inf_from_headers('content-language')
 			self.content_type = self.inf_from_headers('content-type')
 			self.html = self.request.text
-			self.feed(self.html)
 			self.description = self.find_meta_tags_content('description')
 			self.key_words = self.find_meta_tags_content('keywords')
 			self.title = self.site_title()
@@ -259,7 +256,7 @@ class SiteAuditor(MetaHTMLParser):
 		return re.compile(r'<.*?>').sub('', r) if '<' in r else r  # Регулярки плохо, если есть иные предложения - жду
 
 	def find_meta_tags_content(self, meta_tag):
-		'''
+		"""
 		Функция ищет в html коде сайта мета тег переданный ей и возвращает
 		его значение. Функция учитывает возможность расположения параметра name
 		после параметра content и до.
@@ -268,8 +265,8 @@ class SiteAuditor(MetaHTMLParser):
 			meta_tag - значение какого мета тега ищем - title, keywords, descriptions
 		
 		Возвращает:
-			meta_tag_content - строка с содержание мета-тега
-		'''
+			meta_tag_content - строка с содержанием мета-тега
+		"""
 		meta_tag_content = 'NO'
 		match_meta_tag_str = re.compile(r'<meta[.\s\S]+?>', re.I)
 		meta_tag_raws = re.findall(match_meta_tag_str, self.html)
@@ -279,7 +276,6 @@ class SiteAuditor(MetaHTMLParser):
 				if re.search(content_match, raw):
 					meta_tag_content = re.search(content_match, raw).group(1)
 		return meta_tag_content
-
 
 	def __str__(self):
 		if self.error:

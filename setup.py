@@ -29,7 +29,7 @@ setup(
 	author_email='leonst998@gmail.com',
 	maintainer='ST LEON',
 	maintainer_email='leonst998@gmail.com',
-	requires=['requests'],
+	requires=['requests', 'microdata'],
 	platforms='any',
 	#install_requires=['requests'],
 	classifiers=[

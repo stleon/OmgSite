@@ -2,5 +2,6 @@
 setup.py
 site_auditor\__init__.py
 site_auditor\meta_parser.py
+site_auditor\microformat.py
 site_auditor\oexceptions.py
 site_auditor\site_auditor.py
