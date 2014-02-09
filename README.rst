@@ -18,6 +18,8 @@ Site Auditor
 
     Enter site, please: google.ru
     ==================================================
+    WHOIS
+    ==================================================
     domain:        GOOGLE.RU
     nserver:       ns1.google.com.
     nserver:       ns2.google.com.
@@ -41,7 +43,9 @@ Site Auditor
     whois:         whois.nic.ru
     source:        TCI
 
-    Last updated on 2014.02.06 09:26:36 MSK
+    Last updated on 2014.02.09 16:31:33 MSK
+    ==================================================
+    Base site information
     ==================================================
     Site ip - 87.245.196.177
     Web Server - gws
@@ -52,23 +56,38 @@ Site Auditor
     Description - NO
     Key words - NO
     W3C HTML validator - 26 Errors, 3 warning(s)
+    ==================================================
+    Ranks
+    ==================================================
     Yandex TYC - 64000
     Google Page Rank - 7
     Alexa Rank in all world - 42
     Alexa Rank in Russia - 3
+    ==================================================
+    Catalogs
+    ==================================================
     Yandex Catalog - YES
     Mail Catalog - YES
     Yahoo Catalog - NO
     DMOZ Catalog - YES, 16
-    Yandex Blog links - NEED CAPTCHA
-    Proindexirovano v Google - примерно 1400000
+    ==================================================
+    Links
+    ==================================================
+    Yandex Blog links - 418563
+    Proindexirovano v Google - примерно 1340000
     Proindexirovano v Yandex - 2 млн
-    Popavshie v index Yandex - 131962
+    Popavshie v index Yandex - 123875
+    ==================================================
+    Stats
+    ==================================================
     Yandex Metrika - NO
     Google Analytics - NO
     Live Internet - NO
     Rambler TOP100 - NO
     Mail Rating - NO
+    ==================================================
+    Admins
+    ==================================================
     Joomla Admin Directory - NO
     WordPress Admin Directory - NO
     UMI.CMS Admin Directory - NO
@@ -79,10 +98,11 @@ Site Auditor
     MODX Admin Directory or ISP Manager - NO
     DLE Admin Directory - NO
     Drupal Login page - NO
-    Robots.txt:
-    EMPTY
-    SiteMap XML:
-    EMPTY
+    ==================================================
+    Files
+    ==================================================
+    Robots.txt: EMPTY
+    SiteMap XML: EMPTY
 
 
 Установка

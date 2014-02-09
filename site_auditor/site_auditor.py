@@ -75,8 +75,9 @@ class SiteAuditor(MetaHTMLParser):
 		for i in ['http://', 'https://', '/', ]:
 			if i in site:
 				site = site.replace(i, '')
+		site = site.strip()
 		if re.search(r'[а-яА-Я]', site):
-			site = site.strip().encode('idna').decode('utf-8')
+			site = site.encode('idna').decode('utf-8')
 		if len(site) > 255 or len(site) < 4:
 			raise SiteException('Длина домена не должна превышать 255 символов или быть меньше 4!')
 		return ''.join(list(map(check_symbols, site)))
@@ -190,7 +191,7 @@ class SiteAuditor(MetaHTMLParser):
 		"""
 		gpr_hash_seed = "Mining PageRank is AGAINST GOOGLE'S TERMS OF SERVICE. Yes, I'm talking to you, scammer."
 		magic = 0x1020345
-		for i in range(len(self.site)):
+		for i in iter(range(len(self.site))):
 			magic ^= ord(gpr_hash_seed[i % len(gpr_hash_seed)]) ^ ord(self.site[i])
 			magic = (magic >> 23 | magic << 9) & 0xFFFFFFFF
 		url = "http://toolbarqueries.google.com/tbr?client=navclient-auto&features=Rank&ch=%s&q=info:%s" % \
@@ -201,7 +202,7 @@ class SiteAuditor(MetaHTMLParser):
 
 	def robots(self, data):
 		r = requests.get("http://%s/%s" % (self.site, data), allow_redirects=False)
-		return 'EMPTY' if r.status_code in [404, 301, 302] or r.text == self.html else r.text
+		return 'EMPTY' if r.status_code in [404, 301, 302] or r.text == self.html or '404' in r.text else r.text
 
 	def index(self):
 		google = requests.get("https://www.google.ru/search?q=site:%s" % self.site, headers=self.headers).text
