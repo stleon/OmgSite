@@ -59,6 +59,7 @@ class SiteAuditor():
 			self.dle = self.engine('admin.php')
 			self.drupal = self.engine('user')
 			self.html_validator = self.html_valid()
+			self.safe_site = self.safebrowsing()
 
 	@staticmethod
 	def clear_site_name(site):
@@ -295,8 +296,25 @@ class SiteAuditor():
 									mail_rating=self.mail_rating, joomla=self.joomla, word_press=self.word_press,
 									umi=self.umi, ucoz=self.ucoz, bitrix=self.bitrix, simple_login=self.simple_login,
 									admin_login=self.admin_login, modx=self.modx, dle=self.dle, drupal=self.drupal,
-									robots_txt=self.robots_txt, sitemap_xml=self.sitemap_xml)
+									robots_txt=self.robots_txt, sitemap_xml=self.sitemap_xml,
+									g_safe=self.safe_site['google'], yad_safe=self.safe_site['yandex'])
 
+	def safebrowsing(self):
+		# This site is not currently listed as suspicious.
+		# this site has not hosted malicious software over the past 90 days
+		g = requests.get('http://safebrowsing.clients.google.com/safebrowsing/diagnostic?site=%s' % self.site,
+							headers=self.headers).text
+		if 'is not currently listed':
+			message = 'NO - В настоящее время этот сайт не занесен в список подозрительных.'
+		else:
+			message = 'YES - В настоящее время этот сайт занесен в список подозрительных.' # may be, need test site
+		if 'has not hosted malicious' in g:
+			message = '%s NO - За последние 90 дней на этом сайте не размещалось вредоносное ПО.' % message
+		else:
+			message = '%s YES - За последние 90 дней на этом сайте размещалось вредоносное ПО.' % message
+		yad = requests.get('http://yandex.ru/infected?l10n=ru&url=%s' % self.site,
+								headers=self.headers).text.split('<title>')[1].split('</title>')[0].strip()
+		return {'google': message, 'yandex': yad}
 
 if __name__ == '__main__':
 	print(SiteAuditor(input('Enter site, please: ')))

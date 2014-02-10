@@ -57,6 +57,11 @@ MODX Admin Directory or ISP Manager - {modx}
 DLE Admin Directory - {dle}
 Drupal Login page - {drupal}
 {lines}
+Safe Browsing
+{lines}
+Google - {g_safe}
+Yandex - {yad_safe}
+{lines}
 Files
 {lines}
 Robots.txt: {robots_txt}
