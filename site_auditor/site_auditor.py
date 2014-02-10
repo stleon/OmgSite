@@ -248,12 +248,12 @@ class SiteAuditor():
 			return 'Вы в течении 15 минут превышали лимит (30 запросов в минуту). Восстановление доступа будет ' \
 										'не менее, чем через час'
 		else:
-			return re.compile(r'<.*?>').sub('', r)  # Регулярки плохо, если есть иные предложения - жду
+			return re.compile(r'<.*?>').sub('', r)
 
 	def html_valid(self):
 		r = requests.get('http://validator.w3.org/check?uri=%s' % self.site, headers=self.headers,).text
 		r = r.split('valid">')[2].split('</td>')[0].strip()
-		return re.compile(r'<.*?>').sub('', r) if '<' in r else r  # Регулярки плохо, если есть иные предложения - жду
+		return re.compile(r'<.*?>').sub('', r) if '<' in r else r
 
 	def find_meta_tags_content(self, meta_tag):
 		"""

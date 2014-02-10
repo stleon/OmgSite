@@ -109,14 +109,13 @@ Site Auditor
 Установка
 ---------
 
-Для работы **Site Auditor** необходим  `Requests <https://github.com/kennethreitz/requests>`_, `Microdata <https://github.com/edsu/microdata>`_ и Python 3.
+Для работы **Site Auditor** необходим  `Requests <https://github.com/kennethreitz/requests>`_  и Python 3.
 
 Вы можете `скачать <https://github.com/stleon/OmgSite/archive/master.zip>`_ текущую версию (все самое новое). Или вы также способны на следующее:
 
 .. code-block::
 
     pip install requests
-    pip install microdata
     pip install site-auditor
 
 Как пользоваться
