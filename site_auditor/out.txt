@@ -28,6 +28,7 @@ Yandex Catalog - {cat}
 Mail Catalog - {mail_catalog}
 Yahoo Catalog - {yahoo_catalog}
 DMOZ Catalog - {dmoz}
+TDP Catalog - {tdp}
 {lines}
 Links
 {lines}
@@ -35,6 +36,7 @@ Yandex Blog links - {blogs}
 Proindexirovano v Google - {google}
 Proindexirovano v Yandex - {yandex_standart}
 Popavshie v index Yandex - {yandex_in_index}
+Yahoo index - {yahoo_index}
 {lines}
 Stats
 {lines}

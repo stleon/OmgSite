@@ -5,7 +5,7 @@ Site Auditor
 - WHOIS
 - ip, title, description, keywords, web-server, powered by, content language, content type
 - Яндекс ТИЦ, Google PR, Alexa rank (во всем мире/в отдельной стране)
-- Проверка на наличие в каталогах Яндекс, Mail, Yahoo, DMOZ
+- Проверка на наличие в каталогах Яндекс, Mail, Yahoo, DMOZ, TDP
 - Количество ссылок в Яндекс Блоги (часто требует капчу), Google, Яндекс (сколько проиндексировано всего (часто требует капчу)/попаввшие в индекс)
 - Проверка установки Яндекс метрики, Google Analytics, Live Internet, Rambler TOP100, Mail Rating
 - Проверка существования страниц авторизации - Joomla, WordPress, UMI.CMS, Ucoz, Bitrix, /admin, /login, MODX, DLE, Drupal, ISP Manager
@@ -71,6 +71,7 @@ Site Auditor
     Mail Catalog - YES
     Yahoo Catalog - NO
     DMOZ Catalog - YES, 16
+    TDP Catalog - YES
     ==================================================
     Links
     ==================================================
@@ -78,6 +79,7 @@ Site Auditor
     Proindexirovano v Google - примерно 1340000
     Proindexirovano v Yandex - 2 млн
     Popavshie v index Yandex - 123875
+    Yahoo index - 3,320,000
     ==================================================
     Stats
     ==================================================

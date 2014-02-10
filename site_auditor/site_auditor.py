@@ -48,6 +48,7 @@ class SiteAuditor():
 			self.pro_index = self.index()
 			self.mail_catalog = self.catalogs('Не найдено', 'http://search.list.mail.ru/?q=')
 			self.yahoo_catalog = self.catalogs('We did not find', 'http://dir.search.yahoo.com/search?ei=UTF-8&h=c&p=')
+			self.tdp_catalog = self.catalogs('No listings have been found', 'http://www.trustdirectory.org/search.php?what=')
 			self.joomla = self.engine('administrator')
 			self.word_press = self.engine('wp-login.php')
 			self.umi = self.engine('admin/content/sitetree')
@@ -228,7 +229,13 @@ class SiteAuditor():
 			yad_ind = yad_ind.text.split('Страницы: ')[1].split('</div>')[0]
 		except IndexError:
 			yad_ind = 0
-		return {'google': google, 'yandex_standart': yandex, 'yandex_in_index': yad_ind}
+		yahoo = requests.get('http://search.yahoo.com/search?ei=UTF-8&p=site:%s' % self.site, headers=self.headers).text
+		# TODO DELETE Retries
+		try:
+			yahoo = yahoo.split('<span>')[-1].split(' result')[0]
+		except IndexError:
+			yahoo = 0
+		return {'google': google, 'yandex_standart': yandex, 'yandex_in_index': yad_ind, 'yahoo_index': yahoo}
 
 	def catalogs(self, string, catalog):
 		return 'NO' if string in requests.get("%s%s" % (catalog, self.site), headers=self.headers).text else 'YES'
@@ -290,14 +297,15 @@ class SiteAuditor():
 									rank_in_country=self.alexa['rank_in_country'], cat=self.yad['cat'],
 									mail_catalog=self.mail_catalog, yahoo_catalog=self.yahoo_catalog, dmoz=self.dmoz,
 									blogs=self.yad['blogs'], google=self.pro_index['google'],
-									yandex_standart=self.pro_index['yandex_standart'],
+									yandex_standart=self.pro_index['yandex_standart'], tdp=self.tdp_catalog,
 									yandex_in_index=self.pro_index['yandex_in_index'], ya_metrica=self.ya_metrica,
 									google_an=self.google_an, live_inet=self.live_inet, rambler_top=self.rambler_top,
 									mail_rating=self.mail_rating, joomla=self.joomla, word_press=self.word_press,
 									umi=self.umi, ucoz=self.ucoz, bitrix=self.bitrix, simple_login=self.simple_login,
 									admin_login=self.admin_login, modx=self.modx, dle=self.dle, drupal=self.drupal,
 									robots_txt=self.robots_txt, sitemap_xml=self.sitemap_xml,
-									g_safe=self.safe_site['google'], yad_safe=self.safe_site['yandex'])
+									g_safe=self.safe_site['google'], yad_safe=self.safe_site['yandex'],
+									yahoo_index=self.pro_index['yahoo_index'],)
 
 	def safebrowsing(self):
 		# This site is not currently listed as suspicious.
