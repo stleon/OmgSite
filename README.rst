@@ -6,7 +6,7 @@ Site Auditor
 - ip, title, description, keywords, web-server, powered by, content language, content type
 - Яндекс ТИЦ, Google PR, Alexa rank (во всем мире/в отдельной стране)
 - Проверка на наличие в каталогах Яндекс, Mail, Yahoo, DMOZ, TDP
-- Количество ссылок в Яндекс Блоги (часто требует капчу), Google, Яндекс (сколько проиндексировано всего (часто требует капчу)/попаввшие в индекс)
+- Количество ссылок в Яндекс Блоги (часто требует капчу), Google, Яндекс (сколько проиндексировано всего (часто требует капчу)/попаввшие в индекс), Yahoo
 - Проверка установки Яндекс метрики, Google Analytics, Live Internet, Rambler TOP100, Mail Rating
 - Проверка существования страниц авторизации - Joomla, WordPress, UMI.CMS, Ucoz, Bitrix, /admin, /login, MODX, DLE, Drupal, ISP Manager
 - Вывод ``sitemap.xml`` и ``robots.txt``, если существуют.
