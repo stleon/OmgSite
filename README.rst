@@ -6,7 +6,7 @@ Site Auditor
 - ip, title, description, keywords, web-server, powered by, content language, content type
 - Яндекс ТИЦ, Google PR, Alexa rank (во всем мире/в отдельной стране)
 - Проверка на наличие в каталогах Яндекс, Mail, Yahoo, DMOZ, TDP
-- Количество ссылок в Яндекс Блоги (часто требует капчу), Google, Яндекс (сколько проиндексировано всего (часто требует капчу)/попаввшие в индекс), Yahoo
+- Количество ссылок в Яндекс Блоги (часто требует капчу), Google, Яндекс (сколько проиндексировано всего (часто требует капчу)/попаввшие в индекс), Yahoo, Bing (в индексе, кол-во исходящих ссылок)
 - Проверка установки Яндекс метрики, Google Analytics, Live Internet, Rambler TOP100, Mail Rating
 - Проверка существования страниц авторизации - Joomla, WordPress, UMI.CMS, Ucoz, Bitrix, /admin, /login, MODX, DLE, Drupal, ISP Manager
 - Вывод ``sitemap.xml`` и ``robots.txt``, если существуют.
@@ -80,6 +80,8 @@ Site Auditor
     Proindexirovano v Yandex - 2 млн
     Popavshie v index Yandex - 123875
     Yahoo index - 3,320,000
+    Bing index - 3190000
+    Bing Outgoing Links - 59600
     ==================================================
     Stats
     ==================================================

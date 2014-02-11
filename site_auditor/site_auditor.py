@@ -61,6 +61,8 @@ class SiteAuditor():
 			self.drupal = self.engine('user')
 			self.html_validator = self.html_valid()
 			self.safe_site = self.safebrowsing()
+			self.bing = list(map(self.bing_information, ['linkfromdomain:',
+														 'site:']))
 
 	@staticmethod
 	def clear_site_name(site):
@@ -229,13 +231,21 @@ class SiteAuditor():
 			yad_ind = yad_ind.text.split('Страницы: ')[1].split('</div>')[0]
 		except IndexError:
 			yad_ind = 0
-		yahoo = requests.get('http://search.yahoo.com/search?ei=UTF-8&p=site:%s' % self.site, headers=self.headers).text
 		# TODO DELETE Retries
 		try:
-			yahoo = yahoo.split('<span>')[-1].split(' result')[0]
+			yahoo = requests.get('http://search.yahoo.com/search?ei=UTF-8&p=site:%s' % self.site,
+							 headers=self.headers).text.split('<span>')[-1].split(' result')[0]
 		except IndexError:
 			yahoo = 0
 		return {'google': google, 'yandex_standart': yandex, 'yandex_in_index': yad_ind, 'yahoo_index': yahoo}
+
+	def bing_information(self, string):
+		try:
+			return requests.get('http://www.bing.com/search?q=%s%s' % (string, self.site),
+						headers=self.headers).text.split('результаты: ')[1].split('</span>')[0].replace('&#160;', '')
+
+		except IndexError:
+			return 0
 
 	def catalogs(self, string, catalog):
 		return 'NO' if string in requests.get("%s%s" % (catalog, self.site), headers=self.headers).text else 'YES'
@@ -305,7 +315,8 @@ class SiteAuditor():
 									admin_login=self.admin_login, modx=self.modx, dle=self.dle, drupal=self.drupal,
 									robots_txt=self.robots_txt, sitemap_xml=self.sitemap_xml,
 									g_safe=self.safe_site['google'], yad_safe=self.safe_site['yandex'],
-									yahoo_index=self.pro_index['yahoo_index'],)
+									yahoo_index=self.pro_index['yahoo_index'], bing_out=self.bing[0],
+									bing_index=self.bing[1])
 
 	def safebrowsing(self):
 		# This site is not currently listed as suspicious.
@@ -315,7 +326,7 @@ class SiteAuditor():
 		if 'is not currently listed':
 			message = 'NO - В настоящее время этот сайт не занесен в список подозрительных.'
 		else:
-			message = 'YES - В настоящее время этот сайт занесен в список подозрительных.' # may be, need test site
+			message = 'YES - В настоящее время этот сайт занесен в список подозрительных.'  # may be, need test site
 		if 'has not hosted malicious' in g:
 			message = '%s NO - За последние 90 дней на этом сайте не размещалось вредоносное ПО.' % message
 		else:

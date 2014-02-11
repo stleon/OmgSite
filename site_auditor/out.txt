@@ -37,6 +37,8 @@ Proindexirovano v Google - {google}
 Proindexirovano v Yandex - {yandex_standart}
 Popavshie v index Yandex - {yandex_in_index}
 Yahoo index - {yahoo_index}
+Bing index - {bing_index}
+Bing Outgoing Links - {bing_out}
 {lines}
 Stats
 {lines}
