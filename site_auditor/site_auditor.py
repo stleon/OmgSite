@@ -75,7 +75,7 @@ class SiteAuditor():
 		# регулярное выражение для поиска чистого домена
 		clean_url = re.compile(r'(?:http[s]?)?:?(?:)?(?:/){0,2}([\w-]*.[\w-]*)')
 		if re.search(clean_url, site).group(1):
-			site =re.search(clean_url, site).group(1)
+			site = re.search(clean_url, site).group(1)
 		site = site.strip()
 		if len(site) > 255 or len(site) < 4:
 			raise SiteException('Длина домена не должна превышать 255 символов или быть меньше 4!')
