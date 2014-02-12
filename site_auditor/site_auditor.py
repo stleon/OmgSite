@@ -72,15 +72,16 @@ class SiteAuditor():
 				return i
 			else:
 				raise SiteException('Недопустимые символы в домене!')
-
-		for i in ['http://', 'https://', '/', ]:
-			if i in site:
-				site = site.replace(i, '')
+		# регулярное выражение для поиска чистого домена
+		clean_url = re.compile(r'(?:http[s]?)?:?(?:)?(?:/){0,2}([\w-]*.[\w-]*)')
+		if re.search(clean_url, site).group(1):
+			site =re.search(clean_url, site).group(1)
 		site = site.strip()
-		if re.search(r'[а-яА-Я]', site):
-			site = site.encode('idna').decode('utf-8')
 		if len(site) > 255 or len(site) < 4:
 			raise SiteException('Длина домена не должна превышать 255 символов или быть меньше 4!')
+		if re.search(r'[а-яА-Я]', site):
+			site = site.encode('idna').decode('utf-8')
+
 		return ''.join(list(map(check_symbols, site)))
 
 	def my_headers(self):
