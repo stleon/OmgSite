@@ -70,3 +70,6 @@ Files
 {lines}
 Robots.txt: {robots_txt}
 SiteMap XML: {sitemap_xml}
+{lines}
+All Time - {all_time}
+{lines}

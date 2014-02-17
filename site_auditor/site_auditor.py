@@ -6,11 +6,13 @@ import random
 import requests
 from oexceptions import SiteException
 import re
+import time
 
 
 class SiteAuditor():
 	def __init__(self, site):
 		try:
+			self.start_time = time.time()
 			self.site = self.clear_site_name(site)
 			self.headers = self.my_headers()
 			self.ip = socket.gethostbyname(self.site)
@@ -61,8 +63,9 @@ class SiteAuditor():
 			self.drupal = self.engine('user')
 			self.html_validator = self.html_valid()
 			self.safe_site = self.safebrowsing()
-			self.bing = list(map(self.bing_information, ['linkfromdomain:',
-														 'site:']))
+			self.bing = list(map(self.bing_information, ['linkfromdomain:', 'site:']))
+		finally:
+			self.all_time = "%.2f seconds" % (time.time() - self.start_time)
 
 	@staticmethod
 	def clear_site_name(site):
@@ -81,7 +84,6 @@ class SiteAuditor():
 			raise SiteException('Длина домена не должна превышать 255 символов или быть меньше 4!')
 		if re.search(r'[а-яА-Я]', site):
 			site = site.encode('idna').decode('utf-8')
-
 		return ''.join(list(map(check_symbols, site)))
 
 	def my_headers(self):
@@ -317,7 +319,7 @@ class SiteAuditor():
 									robots_txt=self.robots_txt, sitemap_xml=self.sitemap_xml,
 									g_safe=self.safe_site['google'], yad_safe=self.safe_site['yandex'],
 									yahoo_index=self.pro_index['yahoo_index'], bing_out=self.bing[0],
-									bing_index=self.bing[1])
+									bing_index=self.bing[1], all_time=self.all_time)
 
 	def safebrowsing(self):
 		# This site is not currently listed as suspicious.
@@ -335,6 +337,7 @@ class SiteAuditor():
 		yad = requests.get('http://yandex.ru/infected?l10n=ru&url=%s' % self.site,
 								headers=self.headers).text.split('<title>')[1].split('</title>')[0].strip()
 		return {'google': message, 'yandex': yad}
+
 
 if __name__ == '__main__':
 	print(SiteAuditor(input('Enter site, please: ')))
