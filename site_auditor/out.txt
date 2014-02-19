@@ -65,6 +65,7 @@ Safe Browsing
 {lines}
 Google - {g_safe}
 Yandex - {yad_safe}
+Site Advisor - {site_advisor}
 {lines}
 Files
 {lines}

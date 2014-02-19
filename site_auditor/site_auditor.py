@@ -206,7 +206,7 @@ class SiteAuditor():
 
 	def robots(self, data):
 		r = requests.get("http://%s/%s" % (self.site, data), allow_redirects=False)
-		return 'EMPTY' if r.status_code in [404, 301, 302] or r.text == self.html or '404' in r.text else r.text
+		return 'EMPTY' if r.status_code in [404, 301, 302] or r.text == self.html or 'не найдена' in r.text else r.text
 
 	def index(self):
 		google = requests.get("https://www.google.ru/search?q=site:%s" % self.site, headers=self.headers).text
@@ -255,8 +255,12 @@ class SiteAuditor():
 
 	def engine(self, string):
 		r = requests.get('http://%s/%s' % (self.site, string), headers=self.headers, allow_redirects=True)
+
+		def check(string, text=r.text):
+			return True if string not in text else False
+
 		return 'YES' if r.status_code not in [404, 403, 503, 301, 302] \
-				and r.text != self.html and '404' not in r.text else 'NO'
+				and r.text != self.html and check('404') and check('не найдена') and check('not found') else 'NO'
 
 	def who(self):
 		# Не юзается "встроенная" whois, тк на unix она встроенная, на винде, говорят, нет
@@ -319,7 +323,7 @@ class SiteAuditor():
 									robots_txt=self.robots_txt, sitemap_xml=self.sitemap_xml,
 									g_safe=self.safe_site['google'], yad_safe=self.safe_site['yandex'],
 									yahoo_index=self.pro_index['yahoo_index'], bing_out=self.bing[0],
-									bing_index=self.bing[1], all_time=self.all_time)
+									bing_index=self.bing[1], all_time=self.all_time, site_advisor=self.safe_site['s_a'])
 
 	def safebrowsing(self):
 		# This site is not currently listed as suspicious.
@@ -336,7 +340,9 @@ class SiteAuditor():
 			message = '%s YES - За последние 90 дней на этом сайте размещалось вредоносное ПО.' % message
 		yad = requests.get('http://yandex.ru/infected?l10n=ru&url=%s' % self.site,
 								headers=self.headers).text.split('<title>')[1].split('</title>')[0].strip()
-		return {'google': message, 'yandex': yad}
+		site_advisor = requests.get('http://www.siteadvisor.com/sites/%s' % self.site,
+								headers=self.headers).text.split('class="intro">')[1].split('.</p>')[0]
+		return {'google': message, 'yandex': yad, 's_a': site_advisor}
 
 
 if __name__ == '__main__':
