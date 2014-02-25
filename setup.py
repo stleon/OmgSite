@@ -18,8 +18,6 @@ setup(
 	version=site_auditor.__version__,
 	description='site auditor',
 	long_description=open_docs('README.rst') + '\n\n' + open_docs('HISTORY.rst'),
-	packages=['site_auditor'],
-	package_dir={'site_auditor': 'site_auditor'},
 	#zip_safe=False,
 	url='https://github.com/stleon/OmgSite',
 	download_url='https://github.com/stleon/OmgSite/archive/master.zip',
@@ -30,6 +28,9 @@ setup(
 	maintainer_email='leonst998@gmail.com',
 	requires=['requests'],
 	platforms='any',
+	packages=['site_auditor'],
+	package_dir={'site_auditor': 'site_auditor'},
+	package_data={'': ['README.rst', 'AUTHORS.rst', 'HISTORY.rst'], },
 	include_package_data=True,
 	#install_requires=['requests'],
 	classifiers=[
