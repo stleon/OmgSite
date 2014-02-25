@@ -3,3 +3,4 @@ setup.py
 site_auditor\__init__.py
 site_auditor\oexceptions.py
 site_auditor\site_auditor.py
+include *.rst

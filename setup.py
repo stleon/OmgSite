@@ -9,7 +9,6 @@ if sys.argv[-1] == 'publish':
 	os.system('python setup.py sdist upload')
 	sys.exit()
 
-
 def open_docs(doc):
 	with open(doc, encoding="utf8") as f:
 		return f.read()
@@ -31,6 +30,7 @@ setup(
 	maintainer_email='leonst998@gmail.com',
 	requires=['requests'],
 	platforms='any',
+	include_package_data=True,
 	#install_requires=['requests'],
 	classifiers=[
 		'Development Status :: 2 - Pre-Alpha',
