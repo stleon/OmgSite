@@ -24,6 +24,7 @@ Site Auditor
 .. code-block::
 
     Enter site, please: google.ru
+    Full scan? y/n y
     ==================================================
     WHOIS
     ==================================================

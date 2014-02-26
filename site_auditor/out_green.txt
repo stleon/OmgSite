@@ -1,0 +1,14 @@
+Yandex TYC - {tyc}
+Google Page Rank - {pr}
+Alexa Rank in all world - {all_world}
+Alexa Rank in {country} - {rank_in_country}
+Yandex Blog links - {blogs}
+Proindexirovano v Google - {google}
+Proindexirovano v Yandex - {yandex_standart}
+Popavshie v index Yandex - {yandex_in_index}
+Yahoo index - {yahoo_index}
+Bing index - {bing_index}
+Bing Outgoing Links - {bing_out}
+Google - {g_safe}
+Yandex - {yad_safe}
+Site Advisor - {site_advisor}

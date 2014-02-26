@@ -10,62 +10,82 @@ import time
 
 
 class SiteAuditor():
-	def __init__(self, site):
+	def __init__(self, site, full_scan):
 		try:
 			self.start_time = time.time()
+			self.full_scan = self.scan_check(full_scan)
 			self.site = self.clear_site_name(site)
 			self.headers = self.my_headers()
 			self.ip = socket.gethostbyname(self.site)
 			self.request = requests.get('http://%s' % self.site, headers=self.headers)
-			with open(r'out.txt') as output:
+			self.file = 'out.txt' if self.full_scan else 'out_green.txt'
+			with open(r'%s' % (self.file)) as output:
 				self.output = output.read()
 		except (socket.gaierror, requests.exceptions.ConnectionError):
 			self.error = 'NO HOST AVAILABLE'
 		except SiteException as error:
 			self.error = error
 		except FileNotFoundError:
-			self.error = 'Не найден файл output.txt!'
+			self.error = 'Не найден файл %s' % self.file
 		else:
 			self.error = None
-			self.whois = self.who()
-			self.web_server = self.inf_from_headers('server')
-			self.powered_by = self.inf_from_headers('x-powered-by')
-			self.content_lanuage = self.inf_from_headers('content-language')
-			self.content_type = self.inf_from_headers('content-type')
-			self.html = self.request.text
-			self.description = self.find_meta_tags_content('description')
-			self.key_words = self.find_meta_tags_content('keywords')
-			self.title = self.site_title()
-			self.ya_metrica = self.analytics('yaCounter')
-			self.google_an = self.analytics('google-analytics.com/ga.js')
-			self.live_inet = self.analytics('counter.yadro.ru/hit')
-			self.rambler_top = self.analytics('counter.rambler.ru/top100.jcn?')
-			self.mail_rating = self.analytics('top.list.ru/counter?id=')
-			self.yad = self.yandex()
-			self.pr = self.page_rank()
-			self.dmoz = self.dmoz_rank()
-			self.alexa = self.alexa_rank()
-			self.robots_txt = self.robots('robots.txt')
-			self.sitemap_xml = self.robots('sitemap.xml')
-			self.pro_index = self.index()
-			self.mail_catalog = self.catalogs('Не найдено', 'http://search.list.mail.ru/?q=')
-			self.yahoo_catalog = self.catalogs('We did not find', 'http://dir.search.yahoo.com/search?ei=UTF-8&h=c&p=')
-			self.tdp_catalog = self.catalogs('No listings have been found', 'http://www.trustdirectory.org/search.php?what=')
-			self.joomla = self.engine('administrator')
-			self.word_press = self.engine('wp-login.php')
-			self.umi = self.engine('admin/content/sitetree')
-			self.ucoz = self.engine('panel')
-			self.bitrix = self.engine('bitrix/admin')
-			self.simple_login = self.engine('login')
-			self.admin_login = self.engine('admin')
-			self.modx = self.engine('manager')
-			self.dle = self.engine('admin.php')
-			self.drupal = self.engine('user')
-			self.html_validator = self.html_valid()
-			self.safe_site = self.safebrowsing()
-			self.bing = list(map(self.bing_information, ['linkfromdomain:', 'site:']))
+			if self.full_scan:
+				self.info_green()
+				self.info_red()
+			else:
+				self.info_green()
 		finally:
 			self.all_time = "%.2f seconds" % (time.time() - self.start_time)
+
+	def scan_check(self, string):
+		string = string.lower().strip()
+		if string == 'y':
+			return True
+		elif string == 'n':
+			return False
+		else:
+			raise SiteException('Недопустимый вид сканирования!')
+
+	def info_green(self):
+		self.yad = self.yandex()
+		self.pr = self.page_rank()
+		self.alexa = self.alexa_rank()
+		self.pro_index = self.index()
+		self.bing = list(map(self.bing_information, ['linkfromdomain:', 'site:']))
+		self.safe_site = self.safebrowsing()
+
+	def info_red(self):
+		self.whois = self.who()
+		self.web_server = self.inf_from_headers('server')
+		self.powered_by = self.inf_from_headers('x-powered-by')
+		self.content_lanuage = self.inf_from_headers('content-language')
+		self.content_type = self.inf_from_headers('content-type')
+		self.html = self.request.text
+		self.description = self.find_meta_tags_content('description')
+		self.key_words = self.find_meta_tags_content('keywords')
+		self.title = self.site_title()
+		self.ya_metrica = self.analytics('yaCounter')
+		self.google_an = self.analytics('google-analytics.com/ga.js')
+		self.live_inet = self.analytics('counter.yadro.ru/hit')
+		self.rambler_top = self.analytics('counter.rambler.ru/top100.jcn?')
+		self.mail_rating = self.analytics('top.list.ru/counter?id=')
+		self.dmoz = self.dmoz_rank()
+		self.robots_txt = self.robots('robots.txt')
+		self.sitemap_xml = self.robots('sitemap.xml')
+		self.mail_catalog = self.catalogs('Не найдено', 'http://search.list.mail.ru/?q=')
+		self.yahoo_catalog = self.catalogs('We did not find', 'http://dir.search.yahoo.com/search?ei=UTF-8&h=c&p=')
+		self.tdp_catalog = self.catalogs('No listings have been found', 'http://www.trustdirectory.org/search.php?what=')
+		self.joomla = self.engine('administrator')
+		self.word_press = self.engine('wp-login.php')
+		self.umi = self.engine('admin/content/sitetree')
+		self.ucoz = self.engine('panel')
+		self.bitrix = self.engine('bitrix/admin')
+		self.simple_login = self.engine('login')
+		self.admin_login = self.engine('admin')
+		self.modx = self.engine('manager')
+		self.dle = self.engine('admin.php')
+		self.drupal = self.engine('user')
+		self.html_validator = self.html_valid()
 
 	@staticmethod
 	def clear_site_name(site):
@@ -306,7 +326,8 @@ class SiteAuditor():
 		if self.error:
 			return str(self.error)
 		else:
-			return self.output.format(whois=self.whois, lines='='*50, ip=self.ip, web_server=self.web_server,
+			if self.full_scan:
+				return self.output.format(whois=self.whois, lines='='*50, ip=self.ip, web_server=self.web_server,
 									powered_by=self.powered_by, content_lanuage=self.content_lanuage,
 									content_type=self.content_type, title=self.title, description=self.description,
 									key_words=self.key_words, html_validator=self.html_validator, tyc=self.yad['tyc'],
@@ -324,6 +345,15 @@ class SiteAuditor():
 									g_safe=self.safe_site['google'], yad_safe=self.safe_site['yandex'],
 									yahoo_index=self.pro_index['yahoo_index'], bing_out=self.bing[0],
 									bing_index=self.bing[1], all_time=self.all_time, site_advisor=self.safe_site['s_a'])
+			else:
+				return self.output.format(tyc=self.yad['tyc'],
+									pr=self.pr, all_world=self.alexa['all_world'], country=self.alexa['country'],
+									rank_in_country=self.alexa['rank_in_country'], blogs=self.yad['blogs'],
+									google=self.pro_index['google'], site_advisor=self.safe_site['s_a'],
+									yandex_standart=self.pro_index['yandex_standart'],
+									yandex_in_index=self.pro_index['yandex_in_index'], g_safe=self.safe_site['google'],
+									yahoo_index=self.pro_index['yahoo_index'], bing_out=self.bing[0],
+									bing_index=self.bing[1], yad_safe=self.safe_site['yandex'],)
 
 	def safebrowsing(self):
 		# This site is not currently listed as suspicious.
@@ -346,4 +376,4 @@ class SiteAuditor():
 
 
 if __name__ == '__main__':
-	print(SiteAuditor(input('Enter site, please: ')))
+	print(SiteAuditor(input('Enter site, please: '), input('Full scan? y/n ')))
