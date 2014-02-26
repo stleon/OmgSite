@@ -18,15 +18,10 @@ class SiteAuditor():
 			self.headers = self.my_headers()
 			self.ip = socket.gethostbyname(self.site)
 			self.request = requests.get('http://%s' % self.site, headers=self.headers)
-			self.file = 'out.txt' if self.full_scan else 'out_green.txt'
-			with open(r'%s' % (self.file)) as output:
-				self.output = output.read()
 		except (socket.gaierror, requests.exceptions.ConnectionError):
 			self.error = 'NO HOST AVAILABLE'
 		except SiteException as error:
 			self.error = error
-		except FileNotFoundError:
-			self.error = 'Не найден файл %s' % self.file
 		else:
 			self.error = None
 			if self.full_scan:
@@ -326,34 +321,13 @@ class SiteAuditor():
 		if self.error:
 			return str(self.error)
 		else:
-			if self.full_scan:
-				return self.output.format(whois=self.whois, lines='='*50, ip=self.ip, web_server=self.web_server,
-									powered_by=self.powered_by, content_lanuage=self.content_lanuage,
-									content_type=self.content_type, title=self.title, description=self.description,
-									key_words=self.key_words, html_validator=self.html_validator, tyc=self.yad['tyc'],
-									pr=self.pr, all_world=self.alexa['all_world'], country=self.alexa['country'],
-									rank_in_country=self.alexa['rank_in_country'], cat=self.yad['cat'],
-									mail_catalog=self.mail_catalog, yahoo_catalog=self.yahoo_catalog, dmoz=self.dmoz,
-									blogs=self.yad['blogs'], google=self.pro_index['google'],
-									yandex_standart=self.pro_index['yandex_standart'], tdp=self.tdp_catalog,
-									yandex_in_index=self.pro_index['yandex_in_index'], ya_metrica=self.ya_metrica,
-									google_an=self.google_an, live_inet=self.live_inet, rambler_top=self.rambler_top,
-									mail_rating=self.mail_rating, joomla=self.joomla, word_press=self.word_press,
-									umi=self.umi, ucoz=self.ucoz, bitrix=self.bitrix, simple_login=self.simple_login,
-									admin_login=self.admin_login, modx=self.modx, dle=self.dle, drupal=self.drupal,
-									robots_txt=self.robots_txt, sitemap_xml=self.sitemap_xml,
-									g_safe=self.safe_site['google'], yad_safe=self.safe_site['yandex'],
-									yahoo_index=self.pro_index['yahoo_index'], bing_out=self.bing[0],
-									bing_index=self.bing[1], all_time=self.all_time, site_advisor=self.safe_site['s_a'])
-			else:
-				return self.output.format(tyc=self.yad['tyc'],
-									pr=self.pr, all_world=self.alexa['all_world'], country=self.alexa['country'],
-									rank_in_country=self.alexa['rank_in_country'], blogs=self.yad['blogs'],
-									google=self.pro_index['google'], site_advisor=self.safe_site['s_a'],
-									yandex_standart=self.pro_index['yandex_standart'],
-									yandex_in_index=self.pro_index['yandex_in_index'], g_safe=self.safe_site['google'],
-									yahoo_index=self.pro_index['yahoo_index'], bing_out=self.bing[0],
-									bing_index=self.bing[1], yad_safe=self.safe_site['yandex'],)
+			return 'Instance of %s, adress %s:\n%s' % (self.__class__.__name__, id(self), self.__attrnames())
+
+	def __attrnames(self):
+		result = ''
+		for attr in sorted(self.__dict__):
+			result += '\tname %s=%s\n' % (attr, self.__dict__[attr])
+		return result
 
 	def safebrowsing(self):
 		# This site is not currently listed as suspicious.
