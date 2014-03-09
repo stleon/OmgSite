@@ -231,12 +231,16 @@ class SiteAuditor():
 			#.replace('примерно', '')
 			try:
 				google = google.split('id="resultStats">Результатов: ')[1].split('<')[0].replace('&#160;', '')
+				if 'примерно' in google:
+					google = int(google.split()[1])
 			except IndexError:
 				google = 'CANT DETECT'
 		yad_session = requests.Session()
 		yandex = yad_session.get("http://yandex.ru/yandsearch?text=&site=%s&ras=1" % self.site, headers=self.headers)
 		try:
 			yandex = yandex.text.split('Нашлось<br>')[1].split('ответов</strong>')[0].replace('&nbsp;', ' ').strip()
+			if 'млн' in yandex:
+				yandex = int(yandex.split()[0]+'000000')
 		except IndexError:
 			# TODO Yandex needs capcha
 			yandex = 'NEED CAPTCHA'
@@ -249,13 +253,7 @@ class SiteAuditor():
 			yad_ind = yad_ind.text.split('Страницы: ')[1].split('</div>')[0]
 		except IndexError:
 			yad_ind = 0
-		# TODO DELETE Retries
-		try:
-			yahoo = requests.get('http://search.yahoo.com/search?ei=UTF-8&p=site:%s' % self.site,
-							 headers=self.headers).text.split('<span>')[-1].split(' result')[0]
-		except IndexError:
-			yahoo = 0
-		return {'google': google, 'yandex_standart': yandex, 'yandex_in_index': yad_ind, 'yahoo_index': yahoo}
+		return {'google': google, 'yandex_standart': yandex, 'yandex_in_index': yad_ind}
 
 	def bing_information(self, string):
 		try:
