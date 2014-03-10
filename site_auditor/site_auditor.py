@@ -4,9 +4,16 @@ import socket
 from xml.dom.minidom import parseString
 import random
 import requests
-from oexceptions import SiteException
 import re
 import time
+
+
+class SiteException(Exception):
+	def __init__(self, message):
+		self.message = message
+
+	def __str__(self):
+		return self.message
 
 
 class SiteAuditor():
@@ -32,7 +39,8 @@ class SiteAuditor():
 		finally:
 			self.all_time = "%.2f seconds" % (time.time() - self.start_time)
 
-	def scan_check(self, string):
+	@staticmethod
+	def scan_check(string):
 		string = string.lower().strip()
 		if string == 'y':
 			return True
