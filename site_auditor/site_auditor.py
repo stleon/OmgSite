@@ -31,11 +31,13 @@ class SiteAuditor():
 			self.error = error
 		else:
 			self.error = None
-			if self.full_scan:
+			if self.full_scan == 'yes':
 				self.info_green()
 				self.info_red()
-			else:
+			elif self.full_scan == 'no':
 				self.info_green()
+			else:
+				self.info_red()
 		finally:
 			self.all_time = "%.2f seconds" % (time.time() - self.start_time)
 
@@ -43,9 +45,11 @@ class SiteAuditor():
 	def scan_check(string):
 		string = string.lower().strip()
 		if string == 'y':
-			return True
+			return 'yes'
 		elif string == 'n':
-			return False
+			return 'no'
+		elif string == 'two weeks have not been':
+			return 'two weeks have not been'
 		else:
 			raise SiteException('Недопустимый вид сканирования!')
 
@@ -89,6 +93,7 @@ class SiteAuditor():
 		self.dle = self.engine('admin.php')
 		self.drupal = self.engine('user')
 		self.html_validator = self.html_valid()
+
 
 	@staticmethod
 	def clear_site_name(site):
