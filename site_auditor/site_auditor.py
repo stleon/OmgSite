@@ -48,8 +48,8 @@ class SiteAuditor():
 			return 'yes'
 		elif string == 'n':
 			return 'no'
-		elif string == 'two weeks have not been':
-			return 'two weeks have not been'
+		elif string == '2w':
+			return '2w'
 		else:
 			raise SiteException('Недопустимый вид сканирования!')
 
@@ -372,4 +372,4 @@ class SiteAuditor():
 
 
 if __name__ == '__main__':
-	print(SiteAuditor(input('Enter site, please: '), input('Full scan? y/n ')))
+	print(SiteAuditor(input('Enter site, please: '), input('Full scan? y/n/2w ')))
