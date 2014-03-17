@@ -161,16 +161,16 @@ class SiteAuditor():
 		try:
 			return self.request.headers[string]
 		except KeyError:
-			return 'NO'
+			return False
 
 	def site_title(self):
 		try:
 			return self.html.split('<title>')[1].split('</title>')[0].strip()
 		except IndexError:
-			return 'NO'
+			return False
 
 	def analytics(self, string):
-		return 'YES' if string in self.html else 'NO'
+		return True if string in self.html else False
 
 	def yandex(self):
 		r = requests.get('http://bar-navig.yandex.ru/u?ver=2&url=http://%s&show=1' % self.site)
@@ -189,7 +189,7 @@ class SiteAuditor():
 		#print r
 		return {
 				'tyc': tyc, 'blogs': blog_links,
-				'cat': 'YES' if xmldoc.getElementsByTagName('textinfo')[0].childNodes[0].nodeValue.strip() else 'NO',
+				'cat': True if xmldoc.getElementsByTagName('textinfo')[0].childNodes[0].nodeValue.strip() else False,
 		}
 
 	def dmoz_rank(self):
@@ -197,7 +197,7 @@ class SiteAuditor():
 			r = requests.get('http://www.dmoz.org/search?q=%s' % self.site, headers=self.headers).text
 			return 'YES, %s' % (r.split('Open Directory Sites</strong>')[1].split(')</small>')[0].split(' of ')[1])
 		except IndexError:
-			return 'NO'
+			return False
 
 	def alexa_rank(self):
 		r = requests.get('http://data.alexa.com/data?cli=10&dat=snbamz&url=%s' % self.site, headers=self.headers)
@@ -234,7 +234,7 @@ class SiteAuditor():
 
 	def robots(self, data):
 		r = requests.get("http://%s/%s" % (self.site, data), allow_redirects=False)
-		return 'EMPTY' if r.status_code in [404, 301, 302] or r.text == self.html or 'не найдена' in r.text else r.text
+		return False if r.status_code in [404, 301, 302] or r.text == self.html or 'не найдена' in r.text else r.text
 
 	def index(self):
 		google = requests.get("https://www.google.ru/search?q=site:%s" % self.site, headers=self.headers).text
@@ -288,7 +288,7 @@ class SiteAuditor():
 			return 0
 
 	def catalogs(self, string, catalog):
-		return 'NO' if string in requests.get("%s%s" % (catalog, self.site), headers=self.headers).text else 'YES'
+		return False if string in requests.get("%s%s" % (catalog, self.site), headers=self.headers).text else True
 
 	def engine(self, string):
 		r = requests.get('http://%s/%s' % (self.site, string), headers=self.headers, allow_redirects=True)
@@ -296,8 +296,8 @@ class SiteAuditor():
 		def check(string, text=r.text):
 			return True if string not in text else False
 
-		return 'YES' if r.status_code not in [404, 403, 503, 301, 302] \
-				and r.text != self.html and check('404') and check('не найдена') and check('not found') else 'NO'
+		return True if r.status_code not in [404, 403, 503, 301, 302] \
+				and r.text != self.html and check('404') and check('не найдена') and check('not found') else False
 
 	def who(self):
 		# Не юзается "встроенная" whois, тк на unix она встроенная, на винде, говорят, нет
@@ -329,7 +329,7 @@ class SiteAuditor():
 		Возвращает:
 			meta_tag_content - строка с содержанием мета-тега
 		"""
-		meta_tag_content = 'NO'
+		meta_tag_content = False
 		match_meta_tag_str = re.compile(r'<meta[.\s\S]+?>', re.I)
 		meta_tag_raws = re.findall(match_meta_tag_str, self.html)
 		for raw in meta_tag_raws:
@@ -340,15 +340,12 @@ class SiteAuditor():
 		return meta_tag_content
 
 	def __str__(self):
-		if self.error:
-			return str(self.error)
-		else:
-			return 'Instance of %s, adress %s:\n%s' % (self.__class__.__name__, id(self), self.__attrnames())
+		return 'Instance of %s, adress %s:\n%s' % (self.__class__.__name__, id(self), self.__attrnames())
 
 	def __attrnames(self):
 		result = ''
 		for attr in sorted(self.__dict__):
-			result += '\tname %s=%s\n' % (attr, self.__dict__[attr])
+			result += '\tname %s = %s\n' % (attr, self.__dict__[attr])
 		return result
 
 	def safebrowsing(self):
