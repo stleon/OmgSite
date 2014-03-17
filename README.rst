@@ -129,7 +129,7 @@ Site Auditor
 Установка
 ---------
 
-Для работы **Site Auditor** необходим  `Requests <https://github.com/kennethreitz/requests>`_  и Python 3.
+Для работы **Site Auditor** необходим  `Requests <https://github.com/kennethreitz/requests>`_  и Python 3.4.
 
 Вы можете `скачать <https://github.com/stleon/OmgSite/archive/master.zip>`_ текущую версию (все самое новое). Или вы также способны на следующее:
 

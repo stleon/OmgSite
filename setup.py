@@ -43,6 +43,7 @@ setup(
 		'Operating System :: OS Independent',
 		'Programming Language :: Python',
 		'Programming Language :: Python :: 3.3',
+		'Programming Language :: Python :: 3.4',
 		'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
 		'Topic :: Internet :: WWW/HTTP :: Site Management',
 		'Topic :: Internet :: WWW/HTTP :: Site Management :: Link Checking',
