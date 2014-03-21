@@ -255,6 +255,8 @@ class SiteAuditor():
 			yandex = yandex.text.split('Нашлось<br>')[1].split('ответов</strong>')[0].replace('&nbsp;', ' ').strip()
 			if 'млн' in yandex:
 				yandex = yandex.split()[0]+'000000'
+			if 'тыс' in yandex:
+				yandex = yandex.split()[0]+'000'
 			yandex = int(yandex)
 		except IndexError:
 			# TODO Yandex needs capcha
