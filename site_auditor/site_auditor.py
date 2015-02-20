@@ -273,7 +273,7 @@ class SiteAuditor():
 				# TODO DELETE Retries
 		try:
 			yahoo = requests.get('http://search.yahoo.com/search?ei=UTF-8&p=site:%s' % self.site,
-							 headers=self.headers).text.split('<span>')[-1].split(' result')[0]
+							 headers=self.headers).text.split('<span class="">')[-1].split(' result')[0]
 			if ',' in yahoo:
 				yahoo = yahoo.replace(',','')
 			yahoo = int(yahoo)
